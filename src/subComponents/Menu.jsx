@@ -1,26 +1,104 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/menu.css';
+import Login from '../components/Login';
+import SignUp from '../components/SignUp';
+import PersonalData from '../components/PersonalData';
 
 const Menu = ({ user, onLogout }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
-  const [isAyudaOpen, setIsAyudaOpen] = useState(false);
 
-  const openMenu = () => setIsOpen(true);
+    // Menú
+    const [isOpen, setIsOpen] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
+    const [isAyudaOpen, setIsAyudaOpen] = useState(false);
 
-  const closeMenu = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setIsOpen(false);
-      setIsClosing(false);
-      setIsAyudaOpen(false); // cerrar submenú al cerrar menú
+    const openMenu = () => setIsOpen(true);
+
+    const closeMenu = () => {
+        setIsClosing(true);
+        setTimeout(() => {
+        setIsOpen(false);
+        setIsClosing(false);
+        setIsAyudaOpen(false); // cerrar submenú al cerrar menú
     }, 400);
   };
 
-  return (
-    <div className="menu">
-      {!isOpen && (
+    // Login / Registro
+    const [showLogin, setShowLogin] = useState(false);
+    const [showRegister, setShowRegister] = useState(false);
+    const [showPersonalData, setShowPersonalData] = useState(false);
+    const [registerEmailPass, setRegisterEmailPass] = useState(null);
+    const [users, setUsers] = useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [loginError, setLoginError] = useState('');
+
+    const handleLogin = (email, password) => {
+        const foundUser = users.find(user => user.email === email && user.password === password);
+
+        if (foundUser) {
+            setCurrentUser(foundUser);
+            setLoginError('');
+            setShowLogin(false);
+            alert(`Bienvenido, ${foundUser.firstName || 'usuario'}!`);
+        }else{
+            setLoginError('Usuario o contraseña incorrectos');
+        }
+    };
+
+    const handleRegister = (data) => {
+        console.log('Registro con: ', data);
+        setRegisterEmailPass(data);
+        setShowRegister(false);
+        setShowPersonalData(true);
+    };
+
+    const handleRegisterPersonalData = (personalData) => {
+        if (!registerEmailPass) return;
+
+    const newUser = { ...registerEmailPass, ...personalData };
+
+    // Verificar si el email ya está registrado
+    const emailExists = users.some(user => user.email.toLowerCase() === newUser.email.toLowerCase());
+
+    if (emailExists) {
+        alert('Ya existe una cuenta asociada a ese correo electrónico...');
+        setShowPersonalData(false);
+        setRegisterEmailPass(null);
+        return;
+    }
+
+
+    setUsers(prev => [...prev, newUser]);
+    setRegisterEmailPass(null);
+    setShowPersonalData(false);
+    alert('Usuario creado correctamente');
+    }
+
+    const handleLogout = () => {
+        alert('Sesión cerrada');
+        setCurrentUser(null);
+    };
+
+    
+
+    useEffect(() => {
+        const handleOpenLogin = () => {
+            setShowRegister(false);
+            setShowLogin(true);
+        };
+        window.addEventListener('openLogin', handleOpenLogin);
+        return () => {
+            window.removeEventListener('openLogin', handleOpenLogin)
+        };
+    }, []);
+
+    useEffect(() => {
+        console.log('Usuarios actualizados: ', users);
+    }, [users]);
+
+    return (
+        <div className="menu">
+            {!isOpen && (
         <button
           className="menu__container"
           onClick={openMenu}
@@ -47,12 +125,11 @@ const Menu = ({ user, onLogout }) => {
               </button>
 
               <div className="menu__user-header">
-                {user.firstName && user.lastName ? (
-                  <span className="menu__user-name">
-                    {user.firstName} {user.lastName}
+                {currentUser?.firstName && currentUser?.firstSurname ? (
+                  <span className="menu__user-name">{currentUser.firstName} {currentUser.firstSurname}
                   </span>
                 ) : (
-                  <button className="menu__login">
+                  <button className="menu__login" onClick={() => setShowLogin(true)}>
                     <i className="bi bi-person-circle"></i>Mi cuenta
                   </button>
                 )}
@@ -64,9 +141,11 @@ const Menu = ({ user, onLogout }) => {
             </Link>
             <Link to="#"><i className="bi bi-tag"></i>Ofertas</Link>
             <Link to='#'><i className="bi bi-star"></i>Más vendidos</Link>
-            {user.firstName && user.lastName ? (<Link to='#'><i className="bi bi-heart"></i>Favoritos</Link>) : ''}
-            {user.firstName && user.lastName ? (<Link to="#"><i class="bi bi-bag"></i>Mis compras</Link>) : ''}
-            <Link to="#"><i class="bi bi-input-cursor"></i>Contacto</Link>
+            {currentUser?.firstName && currentUser?.firstSurname ? (<Link to='#'><i className="bi bi-heart"></i>Favoritos</Link>) : ''}
+            {currentUser?.firstName && currentUser?.firstSurname ? (<Link to="#"><i class="bi bi-bag"></i>Mis compras</Link>) : ''}
+            {currentUser?.firstName && currentUser?.firstSurname ? (<Link to="#"><i class="bi bi-gear"></i>Administrar perfil</Link>) : ''}
+            {currentUser?.firstName && currentUser?.firstSurname ? (<button onClick={handleLogout} className="menu__logout"><i className="bi bi-box-arrow-right"></i>Cerrar sesión</button>) : ''}
+            <Link to="#"><i className="bi bi-input-cursor"></i>Contacto</Link>
 
             <div
               className={`menu__submenu-container ${isAyudaOpen ? 'active' : ''}`}
@@ -95,6 +174,36 @@ const Menu = ({ user, onLogout }) => {
             onClick={closeMenu}
           />
         </>
+      )}
+
+      {showLogin && (
+        <Login
+            show={showLogin}
+            handleClose={() => setShowLogin(false)}
+            handleLogin={handleLogin}
+            openRegister={() => {
+                setShowLogin(false);
+                setShowRegister(true)
+            }}
+            loginError={loginError}
+            />
+      )}
+
+      {showRegister && (
+        <SignUp
+            show={showRegister}
+            handleClose={() => setShowRegister(false)}
+            handleRegister={handleRegister}
+            users={users}
+        />
+      )}
+
+      {showPersonalData && (
+        <PersonalData
+            show={showPersonalData}
+            handleClose={() => setShowPersonalData(false)}
+            handleRegister={handleRegisterPersonalData}
+        />
       )}
     </div>
   );

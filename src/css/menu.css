@@ -31,11 +31,28 @@
   animation: slideOutLeft 0.4s ease forwards;
 }
 
+.menu__logout{
+    background-color: white;
+    border: none;
+    text-align: left;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 0px;
+    font-size: 18px;
+}
+
+.menu__logout:hover {
+  background-color: #0081EA;
+  border-radius: 10px;
+  padding-left: 5px;
+  color: white;
+}
+
 .menu__panel-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 0;
+  padding: 12px 0;
   padding-right: 1rem;
   margin-bottom: 20px;
   border-bottom: 2.5px solid #0081EA;
