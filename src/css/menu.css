@@ -41,6 +41,23 @@
     font-size: 18px;
 }
 
+.menu__btn-categories{
+    background-color: white;
+    border: none;
+    text-align: left;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 0px;
+    font-size: 18px;
+}
+
+.menu__btn-categories:hover {
+  background-color: #0081EA;
+  border-radius: 10px;
+  padding-left: 5px;
+  color: white;
+}
+
 .menu__logout:hover {
   background-color: #0081EA;
   border-radius: 10px;

@@ -1,0 +1,103 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.overlay-content {
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  overflow-y: auto;
+  position: relative;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.close-btn {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+}
+
+h2 {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+}
+
+.category-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.category-title {
+  font-size: 1.1rem;
+  padding: 10px;
+  cursor: pointer;
+  background-color: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.category-title:hover {
+  background-color: #f0f8ff;
+}
+
+.category-title.active {
+  background-color: #0081EA;
+  color: white;
+}
+
+.arrow {
+  font-size: 0.9rem;
+  margin-left: 8px;
+}
+
+.subcategory-list {
+  list-style: none;
+  padding: 5px 0 5px 15px;
+  margin-bottom: 10px;
+}
+
+.subcategory-list li {
+  margin: 5px 0;
+}
+
+.subcategory-list a {
+  text-decoration: none;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.subcategory-list a:hover {
+  color: #0081EA;
+}
+
+.direct-link {
+  display: block;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  color: #0081EA;
+  text-decoration: underline;
+}

@@ -4,6 +4,7 @@ import '../css/menu.css';
 import Login from '../components/Login';
 import SignUp from '../components/SignUp';
 import PersonalData from '../components/PersonalData';
+import CategoryOverlay from './CategoryOverlay';
 
 const Menu = ({ user, onLogout }) => {
 
@@ -12,6 +13,8 @@ const Menu = ({ user, onLogout }) => {
     const [isClosing, setIsClosing] = useState(false);
     const [isAyudaOpen, setIsAyudaOpen] = useState(false);
 
+    // Categorías
+    const [showCategories, setShowCategories] = useState(false);
     const openMenu = () => setIsOpen(true);
 
     const closeMenu = () => {
@@ -39,14 +42,14 @@ const Menu = ({ user, onLogout }) => {
             setCurrentUser(foundUser);
             setLoginError('');
             setShowLogin(false);
-            alert(`Bienvenido, ${foundUser.firstName || 'usuario'}!`);
+            {/*alert(`Bienvenido, ${foundUser.firstName || 'usuario'}!`);*/}
         }else{
             setLoginError('Usuario o contraseña incorrectos');
         }
     };
 
     const handleRegister = (data) => {
-        console.log('Registro con: ', data);
+        {/*console.log('Registro con: ', data);*/}
         setRegisterEmailPass(data);
         setShowRegister(false);
         setShowPersonalData(true);
@@ -75,7 +78,7 @@ const Menu = ({ user, onLogout }) => {
     }
 
     const handleLogout = () => {
-        alert('Sesión cerrada');
+        {/*alert('Sesión cerrada');*/}
         setCurrentUser(null);
     };
 
@@ -139,6 +142,7 @@ const Menu = ({ user, onLogout }) => {
             <Link to="/">
               <i className="bi bi-house-door"></i>Inicio
             </Link>
+            <button className='menu__btn-categories' onClick={() => setShowCategories(true)}><i className="bi bi-list-ul"></i>Categorías</button>
             <Link to="#"><i className="bi bi-tag"></i>Ofertas</Link>
             <Link to='#'><i className="bi bi-star"></i>Más vendidos</Link>
             {currentUser?.firstName && currentUser?.firstSurname ? (<Link to='#'><i className="bi bi-heart"></i>Favoritos</Link>) : ''}
@@ -158,7 +162,7 @@ const Menu = ({ user, onLogout }) => {
             ><div><i class="bi bi-info-circle"></i>Ayuda</div>
               <i className={`bi ${isAyudaOpen ? 'bi-chevron-up' : 'bi-chevron-down'}`} />
             </div>
-
+          
             {isAyudaOpen && (
               <div className="menu__submenu">
                 <Link to="#">¿Cómo comprar?</Link>
@@ -167,6 +171,8 @@ const Menu = ({ user, onLogout }) => {
                 <Link to="#">Términos y condiciones</Link>
               </div>
             )}
+
+            <CategoryOverlay isOpen={showCategories} onClose={() => setShowCategories(false)}/>
           </nav>
 
           <div
