@@ -74,25 +74,31 @@ h2 {
 }
 
 .subcategory-list {
-  list-style: none;
-  padding: 5px 0 5px 15px;
-  margin-bottom: 10px;
+  padding-left: 1.2rem; /* agrega indentación */
+  margin-top: 0.5rem; /* espacio arriba del listado */
+  margin-bottom: 1rem; /* espacio abajo para separar grupos */
+  list-style: none; /* sin viñetas */
 }
 
 .subcategory-list li {
-  margin: 5px 0;
+  margin-bottom: 0.8rem; /* espacio entre subcategorías */
 }
 
 .subcategory-list a {
+  display: block; /* para que el hover cubra todo el ancho */
+  padding: 0.4rem 0.8rem;
+  color: #000; /* color texto por defecto */
   text-decoration: none;
-  color: #333;
-  font-size: 0.95rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.subcategory-list a:hover {
-  color: #0081EA;
+.subcategory-list li a:hover,
+.subcategory-list li a:focus {
+  background-color: #0081EA; /* azul bootstrap */
+  color: #fff; /* texto blanco */
+  text-decoration: none;
 }
-
 .direct-link {
   display: block;
   padding-left: 10px;

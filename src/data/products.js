@@ -39,7 +39,7 @@ export const products = [
     id: 5,
     name: 'Laptop Dell Inspiron 15 5000',
     category: 'Laptops',
-    subcategory: 'Uso general',
+    subcategory: 'Gaming',
     price: 700,
     image: '/images/laptop-dell-inspiron.jpg',
     description: 'Laptop para trabajo y estudio con buen rendimiento.',
@@ -94,8 +94,8 @@ export const products = [
     name: 'Monitor Samsung 24"',
     price: 200,
     discountPercent: 20, // 20% de descuento
-    category: 'monitores',
-    subcategory: 'Gamer',
+    category: 'Laptops',
+    subcategory: 'Gaming',
     image: 'monitor.jpg',
   },
   {

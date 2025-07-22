@@ -7,28 +7,27 @@ import PersonalData from '../components/PersonalData';
 import CategoryOverlay from './CategoryOverlay';
 
 const Menu = ({ user, onLogout }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [isAyudaOpen, setIsAyudaOpen] = useState(false);
+  const [showCategories, setShowCategories] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+  const [showPersonalData, setShowPersonalData] = useState(false);
+  const [registerEmailPass, setRegisterEmailPass] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loginError, setLoginError] = useState('');
+  const navigate = useNavigate();
 
-    // Menú
-    const [isOpen, setIsOpen] = useState(false);
-    const [isClosing, setIsClosing] = useState(false);
-    const [isAyudaOpen, setIsAyudaOpen] = useState(false);
-    const navigate = useNavigate();
+  const openMenu = () => setIsOpen(true);
 
-    const toggleMenu = () => {
-      setIsOpen(!isOpen);
-      setShowCategories(false);
-    }
-
-    // Categorías
-    const [showCategories, setShowCategories] = useState(false);
-    const openMenu = () => setIsOpen(true);
-
-    const closeMenu = () => {
-        setIsClosing(true);
-        setTimeout(() => {
-        setIsOpen(false);
-        setIsClosing(false);
-        setIsAyudaOpen(false); // cerrar submenú al cerrar menú
+  const closeMenu = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsOpen(false);
+      setIsClosing(false);
+      setIsAyudaOpen(false);
     }, 400);
   };
 
@@ -36,113 +35,77 @@ const Menu = ({ user, onLogout }) => {
     setShowCategories(false);
     setIsOpen(false);
     navigate(path);
-  }
+  };
 
-    // Login / Registro
-    const [showLogin, setShowLogin] = useState(false);
-    const [showRegister, setShowRegister] = useState(false);
-    const [showPersonalData, setShowPersonalData] = useState(false);
-    const [registerEmailPass, setRegisterEmailPass] = useState(null);
-    const [users, setUsers] = useState([]);
-    const [currentUser, setCurrentUser] = useState(null);
-    const [loginError, setLoginError] = useState('');
+  const handleLogin = (email, password) => {
+    const foundUser = users.find(user => user.email === email && user.password === password);
+    if (foundUser) {
+      setCurrentUser(foundUser);
+      setLoginError('');
+      setShowLogin(false);
+    } else {
+      setLoginError('Usuario o contraseña incorrectos');
+    }
+  };
 
-    const handleLogin = (email, password) => {
-        const foundUser = users.find(user => user.email === email && user.password === password);
+  const handleRegister = (data) => {
+    setRegisterEmailPass(data);
+    setShowRegister(false);
+    setShowPersonalData(true);
+  };
 
-        if (foundUser) {
-            setCurrentUser(foundUser);
-            setLoginError('');
-            setShowLogin(false);
-            {/*alert(`Bienvenido, ${foundUser.firstName || 'usuario'}!`);*/}
-        }else{
-            setLoginError('Usuario o contraseña incorrectos');
-        }
-    };
-
-    const handleRegister = (data) => {
-        {/*console.log('Registro con: ', data);*/}
-        setRegisterEmailPass(data);
-        setShowRegister(false);
-        setShowPersonalData(true);
-    };
-
-    const handleRegisterPersonalData = (personalData) => {
-        if (!registerEmailPass) return;
-
+  const handleRegisterPersonalData = (personalData) => {
+    if (!registerEmailPass) return;
     const newUser = { ...registerEmailPass, ...personalData };
-
-    // Verificar si el email ya está registrado
     const emailExists = users.some(user => user.email.toLowerCase() === newUser.email.toLowerCase());
 
     if (emailExists) {
-        alert('Ya existe una cuenta asociada a ese correo electrónico...');
-        setShowPersonalData(false);
-        setRegisterEmailPass(null);
-        return;
+      alert('Ya existe una cuenta asociada a ese correo electrónico...');
+      setShowPersonalData(false);
+      setRegisterEmailPass(null);
+      return;
     }
-
 
     setUsers(prev => [...prev, newUser]);
     setRegisterEmailPass(null);
     setShowPersonalData(false);
     alert('Usuario creado correctamente');
-    }
+  };
 
-    const handleLogout = () => {
-        {/*alert('Sesión cerrada');*/}
-        setCurrentUser(null);
+  const handleLogout = () => {
+    setCurrentUser(null);
+  };
+
+  useEffect(() => {
+    const handleOpenLogin = () => {
+      setShowRegister(false);
+      setShowLogin(true);
     };
+    window.addEventListener('openLogin', handleOpenLogin);
+    return () => {
+      window.removeEventListener('openLogin', handleOpenLogin);
+    };
+  }, []);
 
-    
-
-    useEffect(() => {
-        const handleOpenLogin = () => {
-            setShowRegister(false);
-            setShowLogin(true);
-        };
-        window.addEventListener('openLogin', handleOpenLogin);
-        return () => {
-            window.removeEventListener('openLogin', handleOpenLogin)
-        };
-    }, []);
-
-    useEffect(() => {
-        console.log('Usuarios actualizados: ', users);
-    }, [users]);
-
-    return (
-        <div className="menu">
-            {!isOpen && (
-        <button
-          className="menu__container"
-          onClick={openMenu}
-          aria-label="Abrir menú"
-        >
+  return (
+    <div className="menu">
+      {!isOpen && (
+        <button className="menu__container" onClick={openMenu} aria-label="Abrir menú">
           <i className="bi bi-list"></i>
         </button>
       )}
 
       {(isOpen || isClosing) && (
         <>
-          <nav
-            className={`menu__container-links ${
-              isOpen && !isClosing ? 'active' : ''
-            } ${isClosing ? 'closing' : ''}`}
-          >
+          <nav className={`menu__container-links ${isOpen && !isClosing ? 'active' : ''} ${isClosing ? 'closing' : ''}`}>
             <div className="menu__panel-header">
-              <button
-                className="menu__close-button"
-                onClick={closeMenu}
-                aria-label="Cerrar menú"
-              >
+              <button className="menu__close-button" onClick={closeMenu} aria-label="Cerrar menú">
                 <i className="bi bi-arrow-left"></i>
               </button>
 
               <div className="menu__user-header">
                 {currentUser?.firstName && currentUser?.firstSurname ? (
-                  <span className="menu__user-name">{currentUser.firstName} {currentUser.firstSurname}
-                  </span>
+                  <span className="menu__user-name">{currentUser.firstName} {currentUser.firstSurname}</span>
                 ) : (
                   <button className="menu__login" onClick={() => setShowLogin(true)}>
                     <i className="bi bi-person-circle"></i>Mi cuenta
@@ -154,13 +117,21 @@ const Menu = ({ user, onLogout }) => {
             <Link to="/" onClick={() => setIsOpen(false)}>
               <i className="bi bi-house-door"></i>Inicio
             </Link>
-            <button className='menu__btn-categories' onClick={() => setShowCategories(true)} ><i className="bi bi-list-ul"></i>Categorías</button>
+            <button className='menu__btn-categories' onClick={() => setShowCategories(true)}>
+              <i className="bi bi-list-ul"></i>Categorías
+            </button>
             <Link to="/offers" onClick={() => setIsOpen(false)}><i className="bi bi-tag"></i>Ofertas</Link>
-            <Link to='#' onClick={() => setIsOpen(false)}><i className="bi bi-star"></i>Más vendidos</Link>
-            {currentUser?.firstName && currentUser?.firstSurname ? (<Link to='#'><i className="bi bi-heart" onClick={() => setIsOpen(false)}></i>Favoritos</Link>) : ''}
-            {currentUser?.firstName && currentUser?.firstSurname ? (<Link to="#"><i class="bi bi-bag" onClick={() => setIsOpen(false)}></i>Mis compras</Link>) : ''}
-            {currentUser?.firstName && currentUser?.firstSurname ? (<Link to="#"><i class="bi bi-gear" onClick={() => setIsOpen(false)}></i>Administrar perfil</Link>) : ''}
-            {currentUser?.firstName && currentUser?.firstSurname ? (<button onClick={handleLogout} className="menu__logout"><i className="bi bi-box-arrow-right"></i>Cerrar sesión</button>) : ''}
+            <Link to="#" onClick={() => setIsOpen(false)}><i className="bi bi-star"></i>Más vendidos</Link>
+            {currentUser?.firstName && currentUser?.firstSurname && (
+              <>
+                <Link to="#" onClick={() => setIsOpen(false)}><i className="bi bi-heart"></i>Favoritos</Link>
+                <Link to="#" onClick={() => setIsOpen(false)}><i className="bi bi-bag"></i>Mis compras</Link>
+                <Link to="#" onClick={() => setIsOpen(false)}><i className="bi bi-gear"></i>Administrar perfil</Link>
+                <button onClick={handleLogout} className="menu__logout">
+                  <i className="bi bi-box-arrow-right"></i>Cerrar sesión
+                </button>
+              </>
+            )}
             <Link to="#"><i className="bi bi-input-cursor"></i>Contacto</Link>
 
             <div
@@ -171,10 +142,11 @@ const Menu = ({ user, onLogout }) => {
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') setIsAyudaOpen(!isAyudaOpen);
               }}
-            ><div><i className="bi bi-info-circle"></i>Ayuda</div>
+            >
+              <div><i className="bi bi-info-circle"></i>Ayuda</div>
               <i className={`bi ${isAyudaOpen ? 'bi-chevron-up' : 'bi-chevron-down'}`} />
             </div>
-          
+
             {isAyudaOpen && (
               <div className="menu__submenu">
                 <Link to="#" onClick={() => setIsOpen(false)}>¿Cómo comprar?</Link>
@@ -184,47 +156,63 @@ const Menu = ({ user, onLogout }) => {
               </div>
             )}
 
-            <CategoryOverlay isOpen={showCategories} onClose={() => setShowCategories(false)}/>
+            <CategoryOverlay
+              isOpen={showCategories}
+              onClose={() => setShowCategories(false)}
+              onCategoryClick={(path) => {
+                setShowCategories(false);
+                setIsOpen(false);
+                navigate(path);
+              }}
+            />
           </nav>
 
-          <div
-            className={`menu__overlay ${isClosing ? 'fade-out' : ''}`}
-            onClick={closeMenu}
-          />
+          <div className={`menu__overlay ${isClosing ? 'fade-out' : ''}`} onClick={closeMenu} />
         </>
       )}
 
       {showLogin && (
         <Login
-            show={showLogin}
-            handleClose={() => setShowLogin(false)}
-            handleLogin={handleLogin}
-            openRegister={() => {
-                setShowLogin(false);
-                setShowRegister(true)
-            }}
-            loginError={loginError}
-            />
+          show={showLogin}
+          handleClose={() => setShowLogin(false)}
+          handleLogin={handleLogin}
+          openRegister={() => {
+            setShowLogin(false);
+            setShowRegister(true);
+          }}
+          loginError={loginError}
+        />
       )}
 
       {showRegister && (
         <SignUp
-            show={showRegister}
-            handleClose={() => setShowRegister(false)}
-            handleRegister={handleRegister}
-            users={users}
+          show={showRegister}
+          handleClose={() => setShowRegister(false)}
+          handleRegister={handleRegister}
+          users={users}
         />
       )}
 
       {showPersonalData && (
         <PersonalData
-            show={showPersonalData}
-            handleClose={() => setShowPersonalData(false)}
-            handleRegister={handleRegisterPersonalData}
+          show={showPersonalData}
+          handleClose={() => setShowPersonalData(false)}
+          handleRegister={handleRegisterPersonalData}
         />
       )}
+
+      <CategoryOverlay
+          isOpen={showCategories}
+          onClose={() => setShowCategories(false)}
+          onSelectedCategory={() => {
+          setShowCategories(false);
+          setIsOpen(false);
+      }}
+/>
+
     </div>
   );
 };
 
 export default Menu;
+
