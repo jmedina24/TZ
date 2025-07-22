@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../css/menu.css';
 import Login from '../components/Login';
 import SignUp from '../components/SignUp';
@@ -12,6 +12,12 @@ const Menu = ({ user, onLogout }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
     const [isAyudaOpen, setIsAyudaOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const toggleMenu = () => {
+      setIsOpen(!isOpen);
+      setShowCategories(false);
+    }
 
     // Categorías
     const [showCategories, setShowCategories] = useState(false);
@@ -25,6 +31,12 @@ const Menu = ({ user, onLogout }) => {
         setIsAyudaOpen(false); // cerrar submenú al cerrar menú
     }, 400);
   };
+
+  const handleCategoryClick = (path) => {
+    setShowCategories(false);
+    setIsOpen(false);
+    navigate(path);
+  }
 
     // Login / Registro
     const [showLogin, setShowLogin] = useState(false);
@@ -139,15 +151,15 @@ const Menu = ({ user, onLogout }) => {
               </div>
             </div>
 
-            <Link to="/">
+            <Link to="/" onClick={() => setIsOpen(false)}>
               <i className="bi bi-house-door"></i>Inicio
             </Link>
-            <button className='menu__btn-categories' onClick={() => setShowCategories(true)}><i className="bi bi-list-ul"></i>Categorías</button>
-            <Link to="#"><i className="bi bi-tag"></i>Ofertas</Link>
-            <Link to='#'><i className="bi bi-star"></i>Más vendidos</Link>
-            {currentUser?.firstName && currentUser?.firstSurname ? (<Link to='#'><i className="bi bi-heart"></i>Favoritos</Link>) : ''}
-            {currentUser?.firstName && currentUser?.firstSurname ? (<Link to="#"><i class="bi bi-bag"></i>Mis compras</Link>) : ''}
-            {currentUser?.firstName && currentUser?.firstSurname ? (<Link to="#"><i class="bi bi-gear"></i>Administrar perfil</Link>) : ''}
+            <button className='menu__btn-categories' onClick={() => setShowCategories(true)} ><i className="bi bi-list-ul"></i>Categorías</button>
+            <Link to="/offers" onClick={() => setIsOpen(false)}><i className="bi bi-tag"></i>Ofertas</Link>
+            <Link to='#' onClick={() => setIsOpen(false)}><i className="bi bi-star"></i>Más vendidos</Link>
+            {currentUser?.firstName && currentUser?.firstSurname ? (<Link to='#'><i className="bi bi-heart" onClick={() => setIsOpen(false)}></i>Favoritos</Link>) : ''}
+            {currentUser?.firstName && currentUser?.firstSurname ? (<Link to="#"><i class="bi bi-bag" onClick={() => setIsOpen(false)}></i>Mis compras</Link>) : ''}
+            {currentUser?.firstName && currentUser?.firstSurname ? (<Link to="#"><i class="bi bi-gear" onClick={() => setIsOpen(false)}></i>Administrar perfil</Link>) : ''}
             {currentUser?.firstName && currentUser?.firstSurname ? (<button onClick={handleLogout} className="menu__logout"><i className="bi bi-box-arrow-right"></i>Cerrar sesión</button>) : ''}
             <Link to="#"><i className="bi bi-input-cursor"></i>Contacto</Link>
 
@@ -159,15 +171,15 @@ const Menu = ({ user, onLogout }) => {
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') setIsAyudaOpen(!isAyudaOpen);
               }}
-            ><div><i class="bi bi-info-circle"></i>Ayuda</div>
+            ><div><i className="bi bi-info-circle"></i>Ayuda</div>
               <i className={`bi ${isAyudaOpen ? 'bi-chevron-up' : 'bi-chevron-down'}`} />
             </div>
           
             {isAyudaOpen && (
               <div className="menu__submenu">
-                <Link to="#">¿Cómo comprar?</Link>
-                <Link to="#">Envíos y devoluciones</Link>
-                <Link to="#">Preguntas frecuentes</Link>
+                <Link to="#" onClick={() => setIsOpen(false)}>¿Cómo comprar?</Link>
+                <Link to="#" onClick={() => setIsOpen(false)}>Envíos y devoluciones</Link>
+                <Link to="#" onClick={() => setIsOpen(false)}>Preguntas frecuentes</Link>
                 <Link to="#">Términos y condiciones</Link>
               </div>
             )}

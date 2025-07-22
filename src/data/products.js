@@ -89,4 +89,31 @@ export const products = [
     image: '/images/mouse-razer.jpg',
     description: 'Mouse ergonómico con alta precisión para gaming.',
   },
+    {
+    id: 11,
+    name: 'Monitor Samsung 24"',
+    price: 200,
+    discountPercent: 20, // 20% de descuento
+    category: 'monitores',
+    subcategory: 'Gamer',
+    image: 'monitor.jpg',
+  },
+  {
+    id: 12,
+    name: 'Teclado Mecánico Redragon',
+    price: 50,
+    // sin descuento
+    category: 'perifericos',
+    subcategory: 'teclados',
+    image: 'teclado.jpg',
+  },
+  {
+    id: 13,
+    name: 'Notebook Lenovo',
+    price: 1200,
+    discountPercent: 17, // 17% de descuento
+    category: 'notebooks',
+    subcategory: 'gamer',
+    image: 'notebook.jpg',
+  },
 ];

@@ -4,7 +4,7 @@ import { categories } from '../data/categories';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import '../css/categoryOverlay.css';
 
-const CategoryOverlay = ({ isOpen, onClose }) => {
+const CategoryOverlay = ({ isOpen, onClose, onSelectedCategory }) => {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleIndex = (index) => {
