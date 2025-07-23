@@ -4,6 +4,7 @@ import CategoryPage from '../pages/CategoryPage';
 import ErrorViewer from "../pages/ErrorViewer";
 import OffersPage from "../pages/OffersPage";
 import BestSellersPage from "../pages/BestSellersPage";
+import ContactForm from "../pages/ContactForm";
 
 export const router = createBrowserRouter([
     {
@@ -24,6 +25,11 @@ export const router = createBrowserRouter([
     {
         path: '/bestsellers',
         element: <BestSellersPage />,
+        errorElement: <ErrorViewer />,
+    },
+    {
+        path: '/contact',
+        element: <ContactForm />,
         errorElement: <ErrorViewer />,
     },
 ]);

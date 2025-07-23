@@ -208,7 +208,7 @@ const Menu = ({ user, onLogout }) => {
                 </button>
               </>
             )}
-            <Link to="#">
+            <Link to="/contact">
               <i className="bi bi-input-cursor"></i>Contacto
             </Link>
 

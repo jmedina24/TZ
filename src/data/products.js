@@ -104,6 +104,7 @@ export const products = [
     category: 'Periféricos',
     subcategory: 'Mouse',
     price: 50,
+    discountPercent: 20,
     sold: 1,
     stock: 100,
     image: 'https://www.malditohard.com.ar/wp-content/uploads/product/8/MOU399.webp',

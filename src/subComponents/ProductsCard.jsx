@@ -7,7 +7,6 @@ const ProductsCard = ({ product, onAddToCart, isFavorite, toggleFavorite }) => {
   const navigate = useNavigate();
 
   const handleCardClick = (e) => {
-    // Evita que clicks en botón o ícono de favorito redirijan
     if (
       e.target.closest('.add-to-cart-btn') ||
       e.target.closest('.favorite-icon')
@@ -22,22 +21,32 @@ const ProductsCard = ({ product, onAddToCart, isFavorite, toggleFavorite }) => {
     return (product.price - product.price * (product.discountPercent / 100)).toFixed(2);
   };
 
+  const isOutOfStock = product.stock === 0;
+
   return (
     <div
       className="card product-card h-100 shadow-sm position-relative"
       onClick={handleCardClick}
       style={{ cursor: 'pointer' }}
     >
+      {/* Badge de descuento */}
       {product.discountPercent > 0 && (
         <span className="discount-badge">
           {product.discountPercent}% OFF
         </span>
       )}
 
+      {/* Badge de agotado */}
+      {isOutOfStock && (
+        <span className="stock-out-badge">
+          PRODUCTO AGOTADO
+        </span>
+      )}
+
       {/* Ícono de favorito */}
       <i
         className={`bi bi-heart${isFavorite ? '-fill text-danger' : ''} favorite-icon`}
-        onClick={toggleFavorite}
+        onClick={() => toggleFavorite(product.id)}
         title={isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
       ></i>
 
@@ -64,8 +73,9 @@ const ProductsCard = ({ product, onAddToCart, isFavorite, toggleFavorite }) => {
             className="add-to-cart-btn"
             variant="primary"
             onClick={() => onAddToCart(product)}
+            disabled={isOutOfStock}
           >
-            Añadir al carrito
+            {isOutOfStock ? 'Agotado' : 'Añadir al carrito'}
           </Button>
         </div>
       </div>
@@ -74,5 +84,3 @@ const ProductsCard = ({ product, onAddToCart, isFavorite, toggleFavorite }) => {
 };
 
 export default ProductsCard;
-
-
