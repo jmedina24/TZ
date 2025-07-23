@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { products } from "../data/products";
 import Header from "../components/Header";
+import ProductsCard from "../subComponents/ProductsCard";
 
 const normalize = (str) => {
   return str
@@ -19,10 +20,6 @@ const CategoryPage = () => {
   const { categoria, subcategoria } = useParams();
   const [paginaActual, setPaginaActual] = useState(1);
   const navigate = useNavigate();
-
-  const getDiscountedPrice = (price, discountPercent) => {
-    return (price - price * (discountPercent / 100)).toFixed(2);
-  };
 
   const productosFiltrados = products.filter((product) => {
     const productCategory = normalize(product.category);
@@ -49,14 +46,9 @@ const CategoryPage = () => {
     }
   };
 
-  const handleAddToCart = (e, product) => {
-    e.stopPropagation();
+  const handleAddToCart = (product) => {
     console.log("Añadir al carrito:", product);
-    // lógica real de agregar al carrito irá aquí
-  };
-
-  const handleCardClick = (productId) => {
-    navigate(`/producto/${productId}`);
+    // Aquí podrías manejar la lógica para agregar al carrito
   };
 
   return (
@@ -73,50 +65,10 @@ const CategoryPage = () => {
           ) : (
             productosPagina.map((producto) => (
               <div className="col-6 col-md-4 mb-4" key={producto.id}>
-                <div
-                  className="card h-100 position-relative"
-                  onClick={() => handleCardClick(producto.id)}
-                  style={{ cursor: "pointer" }}
-                >
-                  {producto.discountPercent && (
-                    <span className="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 rounded-start">
-                      -{producto.discountPercent}% OFF
-                    </span>
-                  )}
-                  <img
-                    src={producto.image}
-                    className="card-img-top"
-                    alt={producto.name}
-                  />
-                  <div className="card-body d-flex flex-column">
-                    <p className="card-text">{producto.name}</p>
-                    {producto.discountPercent ? (
-                      <>
-                        <p className="card-text mb-1">
-                          <span className="text-muted text-decoration-line-through">
-                            ${producto.price}
-                          </span>
-                        </p>
-                        <p className="card-text text-danger fw-bold fs-5">
-                          ${getDiscountedPrice(
-                            producto.price,
-                            producto.discountPercent
-                          )}
-                        </p>
-                      </>
-                    ) : (
-                      <h5 className="card-title">${producto.price}</h5>
-                    )}
-                    <div className="d-flex justify-content-center mt-auto">
-                      <button
-                        className="btn btn-sm btn-primary"
-                        onClick={(e) => handleAddToCart(e, producto)}
-                      >
-                        Añadir al carrito
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <ProductsCard
+                  product={producto}
+                  onAddToCart={handleAddToCart}
+                />
               </div>
             ))
           )}

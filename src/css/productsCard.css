@@ -1,0 +1,64 @@
+.product-card {
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.product-card .discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 40px; /* Alejado del icono favorito */
+  z-index: 1;
+  background-color: #dc3545; /* rojo bootstrap */
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0 0.25rem 0.25rem 0;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.favorite-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  z-index: 10;
+  color: #888;
+  transition: color 0.3s ease;
+}
+
+.favorite-icon:hover {
+  color: red;
+}
+
+.product-card .card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  min-height: 3rem;
+}
+
+.product-card .add-to-cart-btn {
+  width: 100%;
+  font-weight: bold;
+}
+
+.product-card img.card-img-top {
+  height: 200px;
+  object-fit: contain;
+  padding: 10px;
+}
+
+.price-original {
+  font-size: 0.9rem;
+  color: #6c757d; /* texto gris */
+  text-decoration: line-through;
+}
+
+.price-discounted {
+  font-size: 1.1rem;
+  color: #dc3545; /* rojo */
+  font-weight: bold;
+  margin-top: 0.25rem;
+}
