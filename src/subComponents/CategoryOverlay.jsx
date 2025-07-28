@@ -4,11 +4,20 @@ import { categories } from '../data/categories';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import '../css/categoryOverlay.css';
 
+const normalize = (str) =>
+  str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[()]/g, "")
+    .replace(/[^a-z0-9-]/g, "");
+
 const CategoryOverlay = ({ isOpen, onClose, onSelectedCategory }) => {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleIndex = useCallback((index) => {
-    setOpenIndex(currentIndex => (currentIndex === index ? null : index));
+    setOpenIndex((currentIndex) => (currentIndex === index ? null : index));
   }, []);
 
   if (!isOpen) return null;
@@ -39,10 +48,10 @@ const CategoryOverlay = ({ isOpen, onClose, onSelectedCategory }) => {
                     {cat.subcategories.map((sub) => (
                       <li key={sub.name}>
                         <Link
-                          to={sub.path}
+                          to={`/categoria/${normalize(cat.name)}/${normalize(sub.name)}`}
                           onClick={() => {
-                            if (onSelectedCategory) onSelectedCategory();
-                            if (onClose) onClose();
+                            if (onSelectedCategory)
+                              onSelectedCategory(normalize(cat.name), normalize(sub.name));
                           }}
                         >
                           {sub.name}
@@ -54,11 +63,11 @@ const CategoryOverlay = ({ isOpen, onClose, onSelectedCategory }) => {
 
                 {cat.subcategories.length === 0 && (
                   <Link
-                    to={cat.path}
+                    to={`/categoria/${normalize(cat.name)}`}
                     className="direct-link"
                     onClick={() => {
-                      if (onSelectedCategory) onSelectedCategory();
-                      if (onClose) onClose();
+                      if (onSelectedCategory)
+                        onSelectedCategory(normalize(cat.name), null);
                     }}
                   >
                     Ver productos
@@ -74,5 +83,3 @@ const CategoryOverlay = ({ isOpen, onClose, onSelectedCategory }) => {
 };
 
 export default CategoryOverlay;
-
-

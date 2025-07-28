@@ -1,21 +1,30 @@
 .product-card {
-  position: relative;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: white;
+  box-shadow: 0 0 8px rgb(0 0 0 / 0.1);
 }
 
 .product-card .discount-badge {
   position: absolute;
   top: 10px;
-  right: 40px; /* Alejado del icono favorito */
+  right: 40px;
   z-index: 1;
-  background-color: #dc3545; /* rojo bootstrap */
+  background-color: #dc3545;
   color: white;
   padding: 0.25rem 0.5rem;
   border-radius: 0 0.25rem 0.25rem 0;
   font-weight: bold;
   font-size: 0.85rem;
+}
+
+.bi-heart-fill {
+  color: red !important;
 }
 
 .favorite-icon {
@@ -36,7 +45,7 @@
 .product-card .card-title {
   font-size: 1rem;
   font-weight: 600;
-  min-height: 3rem;
+  min-height: 3rem; /* para que títulos tengan altura constante */
 }
 
 .product-card .add-to-cart-btn {
@@ -45,20 +54,21 @@
 }
 
 .product-card img.card-img-top {
-  height: 200px;
+  width: 100%;
+  height: 180px;
   object-fit: contain;
-  padding: 10px;
+  margin-bottom: 1rem;
 }
 
 .price-original {
   font-size: 0.9rem;
-  color: #6c757d; /* texto gris */
+  color: #6c757d;
   text-decoration: line-through;
 }
 
 .price-discounted {
   font-size: 1.1rem;
-  color: #dc3545; /* rojo */
+  color: #dc3545;
   font-weight: bold;
   margin-top: 0.25rem;
 }
@@ -67,7 +77,7 @@
   position: absolute;
   top: 10px;
   left: 10px;
-  background: #dc3545; /* rojo Bootstrap */
+  background: #dc3545;
   color: white;
   padding: 4px 8px;
   font-weight: bold;
@@ -76,4 +86,35 @@
   z-index: 10;
 }
 
+.favorite-toast {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #0081ea;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  animation: fadeInOut 2s ease-in-out;
+  z-index: 10;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
 

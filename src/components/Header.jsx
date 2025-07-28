@@ -2,14 +2,14 @@ import React from 'react'
 import '../css/header.css';
 import Menu from '../subComponents/Menu';
 
-const Header = ({user, onLogout}) => {
+const Header = ({user, onLogout, toggleFavorite, }) => {
   return (
     <div className='header'>
         {/* Acceso a Menú y Buscador */}
         <div className='header__container-left'>
             {/* Menú Hamburguesa (Mobile) */}
             <div className='header__container-menu'>
-                <Menu user={user} onLogout={onLogout}/>
+                <Menu user={user} onLogout={onLogout} toggleFavorite={toggleFavorite}/>
             </div>
 
             {/* Ícono de Búsqueda (Mobile) */}

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { products } from "../data/products";
+import { useProducts } from "../context/productContext"; // usás el contexto
 import Header from "../components/Header";
 import ProductsCard from "../subComponents/ProductsCard";
 
@@ -18,25 +18,32 @@ const ITEMS_POR_PAGINA = 10;
 
 const CategoryPage = () => {
   const { categoria, subcategoria } = useParams();
+  const { products } = useProducts(); // productos desde contexto
   const [paginaActual, setPaginaActual] = useState(1);
+  const [productosFiltrados, setProductosFiltrados] = useState([]);
+
   const navigate = useNavigate();
 
-  const productosFiltrados = products.filter((product) => {
-    const productCategory = normalize(product.category);
-    const productSubcategory = normalize(product.subcategory);
+  useEffect(() => {
+    const nuevosFiltrados = products.filter((product) => {
+      const productCategory = normalize(product.category);
+      const productSubcategory = normalize(product.subcategory);
 
-    return (
-      productCategory === categoria.toLowerCase() &&
-      productSubcategory === subcategoria.toLowerCase()
-    );
-  });
+      console.log("Comparando:", productCategory, productSubcategory, "con", categoria, subcategoria);
+
+      return (
+        productCategory === categoria.toLowerCase() &&
+        productSubcategory === subcategoria.toLowerCase()
+      );
+    });
+
+    setProductosFiltrados(nuevosFiltrados);
+    setPaginaActual(1); // reiniciar paginación al cambiar de ruta
+  }, [categoria, subcategoria, products]);
 
   const indiceUltimo = paginaActual * ITEMS_POR_PAGINA;
   const indicePrimero = indiceUltimo - ITEMS_POR_PAGINA;
-  const productosPagina = productosFiltrados.slice(
-    indicePrimero,
-    indiceUltimo
-  );
+  const productosPagina = productosFiltrados.slice(indicePrimero, indiceUltimo);
 
   const totalPaginas = Math.ceil(productosFiltrados.length / ITEMS_POR_PAGINA);
 
@@ -48,7 +55,6 @@ const CategoryPage = () => {
 
   const handleAddToCart = (product) => {
     console.log("Añadir al carrito:", product);
-    // Aquí podrías manejar la lógica para agregar al carrito
   };
 
   return (
@@ -77,40 +83,23 @@ const CategoryPage = () => {
         {totalPaginas > 1 && (
           <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
-              <li
-                className={`page-item ${paginaActual === 1 ? "disabled" : ""}`}
-              >
-                <button
-                  className="page-link"
-                  onClick={() => cambiarPagina(paginaActual - 1)}
-                >
+              <li className={`page-item ${paginaActual === 1 ? "disabled" : ""}`}>
+                <button className="page-link" onClick={() => cambiarPagina(paginaActual - 1)}>
                   Anterior
                 </button>
               </li>
               {[...Array(totalPaginas)].map((_, i) => (
                 <li
                   key={i}
-                  className={`page-item ${
-                    paginaActual === i + 1 ? "active" : ""
-                  }`}
+                  className={`page-item ${paginaActual === i + 1 ? "active" : ""}`}
                 >
-                  <button
-                    className="page-link"
-                    onClick={() => cambiarPagina(i + 1)}
-                  >
+                  <button className="page-link" onClick={() => cambiarPagina(i + 1)}>
                     {i + 1}
                   </button>
                 </li>
               ))}
-              <li
-                className={`page-item ${
-                  paginaActual === totalPaginas ? "disabled" : ""
-                }`}
-              >
-                <button
-                  className="page-link"
-                  onClick={() => cambiarPagina(paginaActual + 1)}
-                >
+              <li className={`page-item ${paginaActual === totalPaginas ? "disabled" : ""}`}>
+                <button className="page-link" onClick={() => cambiarPagina(paginaActual + 1)}>
                   Siguiente
                 </button>
               </li>

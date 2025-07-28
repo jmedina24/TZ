@@ -94,6 +94,14 @@
   gap: 0.5rem;
 }
 
+.menu__user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #0081EA;
+}
+
 .menu__container-links a {
   padding: 12px 0;
   text-decoration: none;

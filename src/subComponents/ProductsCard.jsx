@@ -1,83 +1,74 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
 import '../css/productsCard.css';
+import { useUser } from '../context/userContext';
 
-const ProductsCard = ({ product, onAddToCart, isFavorite, toggleFavorite }) => {
-  const navigate = useNavigate();
+const ProductsCard = ({ product, onAddToCart }) => {
+  const { currentUser, toggleFavorite, favoriteMessage } = useUser();
 
-  const handleCardClick = (e) => {
-    if (
-      e.target.closest('.add-to-cart-btn') ||
-      e.target.closest('.favorite-icon')
-    )
-      return;
-
-    navigate(`/producto/${product.id}`);
-  };
-
-  const getDiscountedPrice = () => {
-    if (!product.discountPercent || product.discountPercent <= 0) return null;
-    return (product.price - product.price * (product.discountPercent / 100)).toFixed(2);
-  };
-
-  const isOutOfStock = product.stock === 0;
+  const isFavorite = currentUser?.favorites?.includes(product.id);
 
   return (
-    <div
-      className="card product-card h-100 shadow-sm position-relative"
-      onClick={handleCardClick}
-      style={{ cursor: 'pointer' }}
-    >
-      {/* Badge de descuento */}
-      {product.discountPercent > 0 && (
-        <span className="discount-badge">
+    <div className="product-card card position-relative">
+      {/* Mensaje flotante al añadir/eliminar de favoritos */}
+      {favoriteMessage && (
+        <div className="favorite-toast">{favoriteMessage}</div>
+      )}
+
+      {product.outOfStock && (
+        <div className="stock-out-badge">PRODUCTO AGOTADO</div>
+      )}
+
+      {product.discountPercent && (
+        <div className="discount-badge">
           {product.discountPercent}% OFF
-        </span>
+        </div>
       )}
 
-      {/* Badge de agotado */}
-      {isOutOfStock && (
-        <span className="stock-out-badge">
-          PRODUCTO AGOTADO
-        </span>
-      )}
-
-      {/* Ícono de favorito */}
-      <i
-        className={`bi bi-heart${isFavorite ? '-fill text-danger' : ''} favorite-icon`}
+      <button
         onClick={() => toggleFavorite(product.id)}
-        title={isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
-      ></i>
+        className="favorite-icon btn p-0"
+        aria-label={isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+        type="button"
+      >
+        <i
+          className={`bi ${isFavorite ? 'bi-heart-fill text-danger' : 'bi-heart text-secondary'}`}
+          style={{ fontSize: '1.4rem' }}
+        />
+      </button>
 
-      <img
-        src={product.image}
-        className="card-img-top"
-        alt={product.name}
-      />
+      {product.image && (
+        <img
+          src={product.image}
+          alt={product.name}
+          className="card-img-top"
+        />
+      )}
 
-      <div className="card-body d-flex flex-column justify-content-between">
-        <div>
-          <h5 className="card-title">{product.name}</h5>
-          {product.discountPercent > 0 ? (
-            <>
-              <p className="price-original">${product.price.toFixed(2)}</p>
-              <p className="price-discounted">${getDiscountedPrice()}</p>
-            </>
-          ) : (
-            <p className="fw-bold">${product.price.toFixed(2)}</p>
-          )}
-        </div>
-        <div className="text-center mt-3">
-          <Button
-            className="add-to-cart-btn"
-            variant="primary"
-            onClick={() => onAddToCart(product)}
-            disabled={isOutOfStock}
-          >
-            {isOutOfStock ? 'Agotado' : 'Añadir al carrito'}
-          </Button>
-        </div>
+      <div className="card-body d-flex flex-column">
+        <h5 className="card-title">{product.name}</h5>
+
+        {product.discountPercent ? (
+          <>
+            <p className="price-original">${product.price.toFixed(2)}</p>
+            <p className="price-discounted">
+              $
+              {(
+                product.price *
+                (1 - product.discountPercent / 100)
+              ).toFixed(2)}
+            </p>
+          </>
+        ) : (
+          <p>${product.price.toFixed(2)}</p>
+        )}
+
+        <button
+          className="btn btn-primary add-to-cart-btn mt-auto"
+          onClick={onAddToCart}
+          disabled={product.outOfStock}
+        >
+          {product.outOfStock ? 'Agotado' : 'Añadir al carrito'}
+        </button>
       </div>
     </div>
   );

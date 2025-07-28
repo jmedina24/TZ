@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../css/menu.css';
 import Login from '../components/Login';
 import SignUp from '../components/SignUp';
 import PersonalData from '../components/PersonalData';
 import CategoryOverlay from './CategoryOverlay';
+import { useUser } from '../context/userContext';
 
-const CURRENT_USER_STORAGE_KEY = 'currentUser';
-
-const Menu = ({ user, onLogout }) => {
+const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [isAyudaOpen, setIsAyudaOpen] = useState(false);
@@ -17,12 +16,10 @@ const Menu = ({ user, onLogout }) => {
   const [showRegister, setShowRegister] = useState(false);
   const [showPersonalData, setShowPersonalData] = useState(false);
   const [registerEmailPass, setRegisterEmailPass] = useState(null);
-  const [users, setUsers] = useState([]);
-  const [currentUser, setCurrentUser] = useState(
-    JSON.parse(localStorage.getItem(CURRENT_USER_STORAGE_KEY)) || null
-  );
   const [loginError, setLoginError] = useState('');
   const navigate = useNavigate();
+
+  const { currentUser, users, login, logout, toggleFavorite, setUsers } = useUser();
 
   const openMenu = () => setIsOpen(true);
 
@@ -41,27 +38,15 @@ const Menu = ({ user, onLogout }) => {
     navigate(path);
   };
 
-  // Función para guardar usuario en localStorage y en estado
-  const saveCurrentUser = (user) => {
-    setCurrentUser(user);
-    localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(user));
-  };
-
+  // Manejar login usando contexto
   const handleLogin = (email, password) => {
-    const foundUser = users.find(
-      (user) => user.email === email && user.password === password
-    );
-    if (foundUser) {
-      // Si no tiene favoritos, inicializarlos como array vacío
-      if (!foundUser.favorites) {
-        foundUser.favorites = [];
-      }
-      saveCurrentUser(foundUser);
+    const result = login(email, password);
+    if (result.success) {
       setLoginError('');
       setShowLogin(false);
-      setIsOpen(false); // Cerrar menú al iniciar sesión
+      setIsOpen(false);
     } else {
-      setLoginError('Usuario o contraseña incorrectos');
+      setLoginError(result.message);
     }
   };
 
@@ -71,6 +56,7 @@ const Menu = ({ user, onLogout }) => {
     setShowPersonalData(true);
   };
 
+  // Registro nuevo usuario y actualización global de users
   const handleRegisterPersonalData = (personalData) => {
     if (!registerEmailPass) return;
     const newUser = { ...registerEmailPass, ...personalData, favorites: [] };
@@ -92,34 +78,8 @@ const Menu = ({ user, onLogout }) => {
   };
 
   const handleLogout = () => {
-    setCurrentUser(null);
-    localStorage.removeItem(CURRENT_USER_STORAGE_KEY);
-    setIsOpen(false); // Cerrar menú al cerrar sesión
-  };
-
-  // Función para agregar o quitar favorito para el usuario actual
-  const toggleFavorite = (productId) => {
-    if (!currentUser) return;
-
-    let updatedFavorites;
-    if (currentUser.favorites.includes(productId)) {
-      // Quitar de favoritos
-      updatedFavorites = currentUser.favorites.filter((id) => id !== productId);
-    } else {
-      // Agregar a favoritos
-      updatedFavorites = [...currentUser.favorites, productId];
-    }
-
-    // Actualizar el usuario
-    const updatedUser = { ...currentUser, favorites: updatedFavorites };
-    saveCurrentUser(updatedUser);
-
-    // También actualizar en users array para persistencia local
-    setUsers((prevUsers) =>
-      prevUsers.map((u) =>
-        u.email === updatedUser.email ? updatedUser : u
-      )
-    );
+    logout();
+    setIsOpen(false);
   };
 
   useEffect(() => {
@@ -132,6 +92,8 @@ const Menu = ({ user, onLogout }) => {
       window.removeEventListener('openLogin', handleOpenLogin);
     };
   }, []);
+
+  const avatar = currentUser?.avatar || "https://i.pravatar.cc/150?img=3";
 
   return (
     <div className="menu">
@@ -163,9 +125,16 @@ const Menu = ({ user, onLogout }) => {
 
               <div className="menu__user-header">
                 {currentUser?.firstName && currentUser?.firstSurname ? (
-                  <span className="menu__user-name">
-                    {currentUser.firstName} {currentUser.firstSurname}
-                  </span>
+                  <>
+                    <img
+                      src={avatar}
+                      alt={`${currentUser.firstName} avatar`}
+                      className="menu__user-avatar"
+                    />
+                    <span className="menu__user-name">
+                      {currentUser.firstName} {currentUser.firstSurname}
+                    </span>
+                  </>
                 ) : (
                   <button
                     className="menu__login"
@@ -305,9 +274,9 @@ const Menu = ({ user, onLogout }) => {
           setIsOpen(false);
         }}
       />
-      
     </div>
   );
 };
 
 export default Menu;
+

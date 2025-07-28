@@ -6,7 +6,7 @@ import Header from '../components/Header';
 
 const ITEMS_PER_PAGE = 10; // 2 columnas x 5 filas
 
-const BestSellersPage = ({ onAddToCart }) => {
+const BestSellersPage = ({ onAddToCart, toggleFavorite, currentUser }) => {
   // Ordeno los productos por sold descendente y tomo top 50 para paginar más fácil (opcional)
   const sortedProducts = [...products]
     .sort((a, b) => (b.sold || 0) - (a.sold || 0))
@@ -27,40 +27,45 @@ const BestSellersPage = ({ onAddToCart }) => {
 
   return (
     <>
-    <Header />
-    <div className="container mt-3">
-      <h3 className="mb-3">Más vendidos</h3>
+      <Header />
+      <div className="container mt-3">
+        <h3 className="mb-3">Más vendidos</h3>
 
-      <div className="row">
-        {currentItems.map(product => (
-          <div key={product.id} className="col-6 mb-3">
-            <ProductsCard product={product} onAddToCart={onAddToCart} />
-          </div>
-        ))}
-      </div>
-
-      {totalPages > 1 && (
-        <Pagination className="justify-content-center">
-          <Pagination.Prev
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          />
-          {[...Array(totalPages)].map((_, idx) => (
-            <Pagination.Item
-              key={idx + 1}
-              active={currentPage === idx + 1}
-              onClick={() => handlePageChange(idx + 1)}
-            >
-              {idx + 1}
-            </Pagination.Item>
+        <div className="row">
+          {currentItems.map(product => (
+            <div key={product.id} className="col-6 mb-3">
+              <ProductsCard
+                product={product}
+                onAddToCart={onAddToCart}
+                toggleFavorite={toggleFavorite}
+                isFavorite={currentUser?.favorites?.includes(product.id)}
+              />
+            </div>
           ))}
-          <Pagination.Next
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          />
-        </Pagination>
-      )}
-    </div>
+        </div>
+
+        {totalPages > 1 && (
+          <Pagination className="justify-content-center">
+            <Pagination.Prev
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            />
+            {[...Array(totalPages)].map((_, idx) => (
+              <Pagination.Item
+                key={idx + 1}
+                active={currentPage === idx + 1}
+                onClick={() => handlePageChange(idx + 1)}
+              >
+                {idx + 1}
+              </Pagination.Item>
+            ))}
+            <Pagination.Next
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            />
+          </Pagination>
+        )}
+      </div>
     </>
   );
 };
