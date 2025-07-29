@@ -6,6 +6,7 @@ import OffersPage from "../pages/OffersPage";
 import BestSellersPage from "../pages/BestSellersPage";
 import ContactForm from "../pages/ContactForm";
 import Favorites from "../pages/Favorites";
+import Profile from "../pages/Profile";
 
 export const router = createBrowserRouter([
     {
@@ -36,6 +37,11 @@ export const router = createBrowserRouter([
     {
         path: '/favorites',
         element: <Favorites />,
+        errorElement: <ErrorViewer />,
+    },
+    {
+        path: '/profile',
+        element: <Profile />,
         errorElement: <ErrorViewer />,
     },
 ]);

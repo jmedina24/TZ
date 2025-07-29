@@ -65,7 +65,33 @@ export const UserProvider = ({ children }) => {
       prevUsers.map((u) => (u.email === updatedUser.email ? updatedUser : u))
     );
 
-    showToast(isFavorite ? 'Producto eliminado de favoritos' : 'Producto añadido a favoritos');
+    showToast(
+      isFavorite
+        ? 'Producto eliminado de favoritos'
+        : 'Producto añadido a favoritos'
+    );
+  };
+
+  // Nueva función para actualizar perfil
+  const updateUserProfile = (updatedData) => {
+    if (!currentUser) return;
+
+    const updatedUser = { ...currentUser, ...updatedData };
+
+    setCurrentUser(updatedUser);
+
+    setUsers((prevUsers) =>
+      prevUsers.map((u) => (u.email === updatedUser.email ? updatedUser : u))
+    );
+
+    // Actualiza también en localStorage (opcional porque useEffect ya lo hace)
+    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    localStorage.setItem(
+      'users',
+      JSON.stringify(
+        users.map((u) => (u.email === updatedUser.email ? updatedUser : u))
+      )
+    );
   };
 
   const logout = () => setCurrentUser(null);
@@ -83,13 +109,11 @@ export const UserProvider = ({ children }) => {
         showLoginWarning,
         closeLoginWarning,
         toastMessage,
-        showToast, // 👈 función genérica para toasts
+        showToast,
+        updateUserProfile, // <--- exportamos la función
       }}
     >
       {children}
     </UserContext.Provider>
   );
 };
-
-
-

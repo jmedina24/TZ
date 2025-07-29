@@ -1,0 +1,131 @@
+.payment-card {
+  width: 460px;         /* Aumentado */
+  height: 260px;        /* Aumentado */
+  border-radius: 18px;
+  color: white;
+  font-family: 'Roboto Mono', monospace;
+  margin: 1rem auto 2rem auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  position: relative;
+  perspective: 1500px;
+}
+
+.card-inner {
+  border-radius: 18px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.8s ease;
+  transform-style: preserve-3d;
+}
+
+.card-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  border-radius: 15px;
+  backface-visibility: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-front {
+  transform: rotateY(0deg);
+  border-radius: 18px;
+  padding: 24px;
+  font-size: 1rem;
+}
+
+.card-back {
+  background: #222;
+  color: #fff;
+  transform: rotateY(180deg);
+  padding-top: 40px;
+  border-radius: 18px;
+  padding: 24px;
+  font-size: 1rem;
+}
+
+.card-logo {
+  width: 90px;
+  align-self: flex-end;
+}
+
+.card-logo-back {
+  width: 70px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  opacity: 0.3;
+}
+
+.card-number {
+  letter-spacing: 3px;
+  margin-top: 40px;
+  font-weight: 600;
+  font-size: 1.8rem;
+}
+
+.card-holder-expiry {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+.card-holder-expiry label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.magnetic-strip {
+  background: #000;
+  border-radius: 5px;
+  height: 50px;
+  margin-bottom: 25px;
+}
+
+.signature-strip {
+  background: #eee;
+  border-radius: 5px;
+  position: relative;
+  margin-bottom: 20px;
+  padding: 0 10px;
+  color: black;
+  font-weight: 700;
+  height: 35px;
+  font-size: 1.4rem;
+}
+
+.ccv {
+  position: absolute;
+  right: 15px;
+  top: 5px;
+  font-family: monospace;
+  letter-spacing: 3px;
+  font-size: 1.3rem;
+}
+
+@media (max-width: 480px) {
+  .payment-card {
+    width: 95vw;
+    height: auto;
+  }
+
+  .card-number {
+    font-size: 1.4rem;
+  }
+
+  .card-holder-expiry {
+    font-size: 0.8rem;
+  }
+}
+

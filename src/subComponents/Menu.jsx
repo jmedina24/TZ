@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Dropdown } from 'react-bootstrap';
 import '../css/menu.css';
 import Login from '../components/Login';
 import SignUp from '../components/SignUp';
@@ -125,16 +126,36 @@ const Menu = () => {
 
               <div className="menu__user-header">
                 {currentUser?.firstName && currentUser?.firstSurname ? (
-                  <>
-                    <img
-                      src={avatar}
-                      alt={`${currentUser.firstName} avatar`}
-                      className="menu__user-avatar"
-                    />
-                    <span className="menu__user-name">
-                      {currentUser.firstName} {currentUser.firstSurname}
-                    </span>
-                  </>
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      variant="light"
+                      id="dropdown-user"
+                      className="menu__user-dropdown-toggle"
+                    >
+                      <img
+                        src={avatar}
+                        alt={`${currentUser.firstName} avatar`}
+                        className="menu__user-avatar"
+                      />
+                      <span className="menu__user-name">
+                        {currentUser.firstName} {currentUser.firstSurname}
+                      </span>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item
+                        onClick={() => {
+                          setIsOpen(false);
+                          navigate('/profile');
+                        }}
+                      >
+                        <i className="bi bi-gear"></i> Administrar perfil
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={handleLogout}>
+                        <i className="bi bi-box-arrow-right"></i> Cerrar sesión
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 ) : (
                   <button
                     className="menu__login"
@@ -169,12 +190,6 @@ const Menu = () => {
                 <Link to="#" onClick={() => setIsOpen(false)}>
                   <i className="bi bi-bag"></i>Mis compras
                 </Link>
-                <Link to="#" onClick={() => setIsOpen(false)}>
-                  <i className="bi bi-gear"></i>Administrar perfil
-                </Link>
-                <button onClick={handleLogout} className="menu__logout">
-                  <i className="bi bi-box-arrow-right"></i>Cerrar sesión
-                </button>
               </>
             )}
             <Link to="/contact">
@@ -221,10 +236,9 @@ const Menu = () => {
             <CategoryOverlay
               isOpen={showCategories}
               onClose={() => setShowCategories(false)}
-              onCategoryClick={(path) => {
+              onSelectedCategory={() => {
                 setShowCategories(false);
                 setIsOpen(false);
-                navigate(path);
               }}
             />
           </nav>
@@ -279,4 +293,3 @@ const Menu = () => {
 };
 
 export default Menu;
-

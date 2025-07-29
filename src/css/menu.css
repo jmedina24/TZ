@@ -196,6 +196,33 @@
   animation: fadeOut 0.3s ease forwards;
 }
 
+.menu__user-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  background: none;
+  box-shadow: none;
+  font-weight: bold;
+  color: inherit;
+}
+
+.menu__user-dropdown-toggle:hover {
+  background-color: transparent;
+}
+
+.dropdown-menu {
+  padding: 1rem 1rem; /* más padding */
+  border-radius: 0.5rem;
+  margin-top: 0.3rem; /* separa del toggle */
+  min-width: 180px; /* ancho mínimo para que no quede muy apretado */
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+}
+
+
 @keyframes slideInLeft {
   0% {
     transform: translateX(-100%);
