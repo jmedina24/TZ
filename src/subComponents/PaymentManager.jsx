@@ -153,28 +153,29 @@ const PaymentManager = () => {
   const handleSave = () => {
     // Validaciones simples
     if (
-      formData.cardNumber.length < 13 ||
-      formData.cardHolder.trim() === '' ||
-      formData.expiry.length !== 5 ||
-      formData.ccv.length < 3
-    ) {
-      alert('Por favor, completa todos los campos correctamente.');
-      return;
-    }
+    formData.cardNumber.length < 13 ||
+    formData.cardHolder.trim() === '' ||
+    formData.expiry.length !== 5 ||
+    formData.ccv.length < 3
+  ) {
+    alert('Por favor, completa todos los campos correctamente.');
+    return;
+  }
 
-    const updatedPayments = [...payments];
-    if (editingIndex !== null) {
-      updatedPayments[editingIndex] = formData;
-    } else {
-      updatedPayments.push(formData);
-    }
-    setPayments(updatedPayments);
+  const updatedPayments = [...payments];
+  if (editingIndex !== null) {
+    updatedPayments[editingIndex] = formData;
+  } else {
+    updatedPayments.push(formData);
+  }
+  setPayments(updatedPayments);
 
-    const user = JSON.parse(localStorage.getItem('currentUser')) || {};
-    user.payments = updatedPayments;
-    localStorage.setItem('currentUser', JSON.stringify(user));
+  // Actualizar sólo la parte de payments del currentUser
+  const user = JSON.parse(localStorage.getItem('currentUser')) || {};
+  const updatedUser = { ...user, payments: updatedPayments };
+  localStorage.setItem('currentUser', JSON.stringify(updatedUser));
 
-    handleCloseModal();
+  handleCloseModal();
   };
 
   const handleDelete = (index) => {
@@ -182,8 +183,8 @@ const PaymentManager = () => {
     setPayments(updatedPayments);
 
     const user = JSON.parse(localStorage.getItem('currentUser')) || {};
-    user.payments = updatedPayments;
-    localStorage.setItem('currentUser', JSON.stringify(user));
+    const updatedUser = { ...user, payments: updatedPayments };
+  localStorage.setItem('currentUser', JSON.stringify(updatedUser));
   };
 
   const style = cardStyles[cardType] || cardStyles.default;
@@ -197,7 +198,7 @@ const PaymentManager = () => {
               {cardType.toUpperCase() === 'DEFAULT'
                 ? 'Tarjeta'
                 : cardType.charAt(0).toUpperCase() + cardType.slice(1)}{' '}
-              **** {payment.cardNumber.slice(-4)}
+              **** **** **** {payment.cardNumber.slice(-4)}
             </div>
             <div className="item-details">Titular: {payment.cardHolder}</div>
             <div className="item-actions">

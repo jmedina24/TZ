@@ -16,7 +16,7 @@ const PaginatedProductList = ({ products = [], onAddToCart }) => {
   };
 
   return (
-    <div className="paginated-products m-4">
+    <div className="paginated-products m-3">
       <div className="row">
         {currentProducts.map(product => (
           <div key={product.id} className="col-6 mb-4">

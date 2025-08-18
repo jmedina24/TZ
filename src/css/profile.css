@@ -203,3 +203,18 @@ button.add-btn {
 button.add-btn:hover {
   background: #0081ea;
 }
+
+.email-display {
+  border: none;
+  background: transparent;
+  color: #212529;
+  font-weight: 600;
+  cursor: default;
+  padding-left: 0;
+  pointer-events: none; /* evita incluso el foco */
+}
+
+.email-display:focus {
+  outline: none;
+}
+

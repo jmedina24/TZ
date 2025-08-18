@@ -7,6 +7,7 @@ import BestSellersPage from "../pages/BestSellersPage";
 import ContactForm from "../pages/ContactForm";
 import Favorites from "../pages/Favorites";
 import Profile from "../pages/Profile";
+import PurchasesList from "../subComponents/PurchasesList";
 
 export const router = createBrowserRouter([
     {
@@ -42,6 +43,11 @@ export const router = createBrowserRouter([
     {
         path: '/profile',
         element: <Profile />,
+        errorElement: <ErrorViewer />,
+    },
+    {
+        path: '/purchases',
+        element: <PurchasesList />,
         errorElement: <ErrorViewer />,
     },
 ]);

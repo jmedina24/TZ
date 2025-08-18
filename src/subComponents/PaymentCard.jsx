@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../css/paymentCard.css';
-import visaLogo from '../assets/visa.svg'; // íconos que tengas
-import mastercardLogo from '../assets/mastercard.svg';
-import amexLogo from '../assets/amex.svg';
+import visaLogo from '../assets/Visa_Logo.png'; // íconos que tengas
+import mastercardLogo from '../assets/Mastercard-Logo.wine.webp';
+import amexLogo from '../assets/amex.webp';
 
 const cardStyles = {
   visa: {

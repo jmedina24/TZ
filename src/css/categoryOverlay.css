@@ -30,22 +30,23 @@
 .close-btn {
   position: absolute;
   right: 15px;
-  top: 15px;
   background: transparent;
   border: none;
   font-size: 1.5rem;
+  padding-top: 12px;
 }
 
-h2 {
-  margin-top: 40px;
-  margin-bottom: 20px;
+.category__title {
+  padding-top: 20px;
   font-size: 1.3rem;
+  padding-bottom: 20px;
+  border-bottom: 2.5px solid #0081EA;
 }
 
 .category-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin-top: 20px;
 }
 
 .category-title {
@@ -57,10 +58,12 @@ h2 {
   justify-content: space-between;
   align-items: center;
   transition: background-color 0.2s ease;
+  color: black;
 }
 
 .category-title:hover {
   background-color: #f0f8ff;
+  color: black;
 }
 
 .category-title.active {

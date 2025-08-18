@@ -1,134 +1,161 @@
-import React, { useState } from 'react'
-import Header from '../components/Header';
-import { Form, Button, Alert, Container } from 'react-bootstrap';
+import React, { useState } from "react";
+import Header from "../components/Header";
+import '../css/contact.css';
 
 const ContactForm = () => {
-    const [formData, setFormData] = useState({
-        nombre:'',
-        email: '',
-        telefono: '',
-        asunto: '',
-        consulta: '',
-    });
+  const [formData, setFormData] = useState({
+    nombre: "",
+    apellido: "",
+    email: "",
+    telefono: "",
+    asunto: "",
+    consulta: "",
+  });
 
-    const [errors, setErrors] = useState({});
-    const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [submitted, setSubmitted] = useState(false);
 
-    const validate = () => {
-        const newErrors = {};
-        if (!formData.nombre.trim()) newErrors.nombre = 'El nombre es obligatorio...';
-        if (!formData.email.trim()){
-            newErrors.email = 'El Email es obligatorio...';
-        }else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = 'El Email ingresado no es válido...';
-        }
-        if (!formData.consulta.trim()) newErrors.consulta = 'La consulta es obligatoria...';
-        return newErrors;
-    };
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.nombre.trim()) newErrors.nombre = "El nombre es obligatorio.";
+    if (!formData.apellido.trim()) newErrors.apellido = "El apellido es obligatorio.";
+    if (!formData.email.trim()) {
+      newErrors.email = "El email es obligatorio.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "El email ingresado no es válido.";
+    }
+    if (!formData.consulta.trim()) newErrors.consulta = "La consulta es obligatoria.";
+    return newErrors;
+  };
 
-    const handleChange = (e) => {
-        setFormData(prev => ({
-            ...prev,
-            [e.target.name]: e.target.value,
-        }));
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-        const formErrors = validate();
-        setErrors(formErrors);
-        if(Object.keys(formErrors).length === 0) {
-            // Lógica de envío del form al back
+    const formErrors = validate();
+    setErrors(formErrors);
 
-            setSubmitted(true);
-            setFormData({nombre: '', email: '', telefono: '', asunto: '', consulta: ''});
-        }else {
-            setSubmitted(false);
-        }
-    };
+    if (Object.keys(formErrors).length === 0) {
+      // Aquí iría la lógica de envío al backend
+      // Ejemplo de objeto para enviar:
+      const payload = { ...formData };
+      console.log("Enviar payload:", payload);
+
+      setSubmitted(true);
+      setFormData({
+        nombre: "",
+        apellido: "",
+        email: "",
+        telefono: "",
+        asunto: "",
+        consulta: "",
+      });
+      setErrors({});
+    } else {
+      setSubmitted(false);
+    }
+  };
 
   return (
     <>
-    <Header />
-    
-    <Container style={{ maxWidth: 600, marginTop: '2rem' }}>
-      <h2 className='mb-4'>Contacto</h2>
-      {submitted && (
-        <Alert variant="success" onClose={() => setSubmitted(false)} dismissible>
-          ¡Gracias por contactarnos! Te responderemos a la brevedad.
-        </Alert>
-      )}
-      <Form onSubmit={handleSubmit} noValidate className='mt-4'>
-        <Form.Group className="mb-3" controlId="nombre">
-          <Form.Label>Nombre*</Form.Label>
-          <Form.Control
-            type="text"
-            name="nombre"
-            placeholder="** Campo obligatorio **"
-            value={formData.nombre}
-            onChange={handleChange}
-            isInvalid={!!errors.nombre}
-          />
-          <Form.Control.Feedback type="invalid">{errors.nombre}</Form.Control.Feedback>
-        </Form.Group>
+      <Header />
+      <div className="contact">
+        <div className="contact__container-title">
+          <h3 className="contact__title">Contacto</h3>
+        </div>
+        <form onSubmit={handleSubmit} className="contact__container-form">
+          <div className="form-group">
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              value={formData.nombre}
+              onChange={handleChange}
+              placeholder=" "
+            />
+            <label htmlFor="nombre">Nombre</label>
+            {errors.nombre && <span className="error">{errors.nombre}</span>}
+          </div>
 
-        <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email*</Form.Label>
-          <Form.Control
-            type="email"
-            name="email"
-            placeholder="** Campo obligatorio **"
-            value={formData.email}
-            onChange={handleChange}
-            isInvalid={!!errors.email}
-          />
-          <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
-        </Form.Group>
+          <div className="form-group">
+            <input
+              type="text"
+              id="apellido"
+              name="apellido"
+              value={formData.apellido}
+              onChange={handleChange}
+              placeholder=" "
+            />
+            <label htmlFor="apellido">Apellido</label>
+            {errors.apellido && <span className="error">{errors.apellido}</span>}
+          </div>
 
-        <Form.Group className="mb-3" controlId="telefono">
-          <Form.Label>Teléfono</Form.Label>
-          <Form.Control
-            type="tel"
-            name="telefono"
-            placeholder="** Campo opcional **"
-            value={formData.telefono}
-            onChange={handleChange}
-          />
-        </Form.Group>
+          <div className="form-group">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder=" "
+            />
+            <label htmlFor="email">Correo electrónico</label>
+            {errors.email && <span className="error">{errors.email}</span>}
+          </div>
 
-        <Form.Group className="mb-3" controlId="asunto">
-          <Form.Label>Asunto</Form.Label>
-          <Form.Control
-            type="text"
-            name="asunto"
-            placeholder="** Campo obligatorio **"
-            value={formData.asunto}
-            onChange={handleChange}
-          />
-        </Form.Group>
+          <div className="form-group">
+            <input
+              type="text"
+              id="telefono"
+              name="telefono"
+              value={formData.telefono}
+              onChange={handleChange}
+              placeholder=" "
+            />
+            <label htmlFor="telefono">Teléfono</label>
+          </div>
 
-        <Form.Group className="mb-3" controlId="consulta">
-          <Form.Label>Consulta*</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={4}
-            name="consulta"
-            placeholder="** Campo obligatorio **"
-            value={formData.consulta}
-            onChange={handleChange}
-            isInvalid={!!errors.consulta}
-          />
-          <Form.Control.Feedback type="invalid">{errors.consulta}</Form.Control.Feedback>
-        </Form.Group>
+          <div className="form-group">
+            <input
+              type="text"
+              id="asunto"
+              name="asunto"
+              value={formData.asunto}
+              onChange={handleChange}
+              placeholder=" "
+            />
+            <label htmlFor="asunto">Asunto</label>
+          </div>
 
-        <Button variant="primary" type="submit">
-          Enviar
-        </Button>
-      </Form>
-    </Container>
+          <div className="form-group">
+            <textarea
+              id="consulta"
+              name="consulta"
+              value={formData.consulta}
+              onChange={handleChange}
+              placeholder=" "
+              rows={4}
+            />
+            <label htmlFor="consulta">Consulta</label>
+            {errors.consulta && <span className="error">{errors.consulta}</span>}
+          </div>
+
+          <div className="contact__container-btn">
+            <button type="submit" className="contact-btn">
+              Enviar
+            </button>
+          </div>
+
+          {submitted && <p className="success-message">¡Formulario enviado correctamente!</p>}
+        </form>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default ContactForm
+export default ContactForm;
+

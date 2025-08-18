@@ -187,7 +187,7 @@ const Menu = () => {
                 <Link to="/favorites" onClick={() => setIsOpen(false)}>
                   <i className="bi bi-heart"></i>Favoritos
                 </Link>
-                <Link to="#" onClick={() => setIsOpen(false)}>
+                <Link to='/purchases' onClick={() => setIsOpen(false)}>
                   <i className="bi bi-bag"></i>Mis compras
                 </Link>
               </>

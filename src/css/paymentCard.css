@@ -1,106 +1,119 @@
-.payment-card {
-  width: 320px;
-  height: 190px;
-  border-radius: 15px;
-  color: white;
-  font-family: 'Roboto Mono', monospace;
-  perspective: 1500px;
-  margin: 1rem auto;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-  position: relative;
-}
-
-.payment-card > div {
-  border-radius: 15px;
-  backface-visibility: hidden;
-  transition: transform 0.8s ease;
-  position: absolute;
-  width: 100%;
+.product-card {
   height: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.payment-card .front {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transform: rotateY(0deg);
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: white;
+  box-shadow: 0 0 8px rgb(0 0 0 / 0.1);
 }
 
-.payment-card .back {
-  background: #222;
-  color: #fff;
-  transform: rotateY(180deg);
-  padding-top: 40px;
-}
-
-.payment-card.flipped .front {
-  transform: rotateY(180deg);
-}
-
-.payment-card.flipped .back {
-  transform: rotateY(0deg);
-}
-
-.card-logo {
-  width: 80px;
-  align-self: flex-end;
-}
-
-.card-logo-back {
-  width: 60px;
+.product-card .discount-badge {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
-  opacity: 0.3;
+  top: 10px;
+  right: 40px;
+  z-index: 1;
+  background-color: #dc3545;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0 0.25rem 0.25rem 0;
+  font-weight: bold;
+  font-size: 0.85rem;
 }
 
-.card-number {
+.bi-heart-fill {
+  color: red !important;
+}
+
+.favorite-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   font-size: 1.4rem;
-  letter-spacing: 3px;
-  margin-top: 40px;
+  cursor: pointer;
+  z-index: 10;
+  color: #888;
+  transition: color 0.3s ease;
+}
+
+.favorite-icon:hover {
+  color: red;
+}
+
+.product-card .card-title {
+  font-size: 1rem;
   font-weight: 600;
+  min-height: 3rem; /* para que títulos tengan altura constante */
 }
 
-.card-holder-expiry {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  letter-spacing: 1px;
+.product-card .add-to-cart-btn {
+  width: 100%;
+  font-weight: bold;
 }
 
-.card-holder-expiry label {
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  opacity: 0.7;
+.product-card img.card-img-top {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  margin-bottom: 1rem;
 }
 
-.magnetic-strip {
-  background: #000;
-  height: 40px;
-  margin-bottom: 20px;
-  border-radius: 5px;
+.price-original {
+  font-size: 0.9rem;
+  color: #6c757d;
+  text-decoration: line-through;
 }
 
-.signature-strip {
-  background: #eee;
-  height: 30px;
-  border-radius: 5px;
-  position: relative;
-  margin-bottom: 20px;
-  padding: 0 10px;
-  color: black;
-  font-weight: 700;
-  font-size: 1.2rem;
+.price-discounted {
+  font-size: 1.1rem;
+  color: #dc3545;
+  font-weight: bold;
+  margin-top: 0.25rem;
 }
 
-.ccv {
+.stock-out-badge {
   position: absolute;
-  right: 15px;
-  top: 5px;
-  font-family: monospace;
-  letter-spacing: 3px;
+  top: 10px;
+  left: 10px;
+  background: #dc3545;
+  color: white;
+  padding: 4px 8px;
+  font-weight: bold;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  z-index: 10;
 }
 
-/* Ajustes adicionales para responsividad o detalles */
+.favorite-toast {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #0081ea;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  animation: fadeInOut 2s ease-in-out;
+  z-index: 10;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}

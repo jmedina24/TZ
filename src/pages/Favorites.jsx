@@ -15,7 +15,7 @@ const Favorites = () => {
     <>
     <Header />
     <div className="favorites-page">
-      <h2 className="text-center my-4">Mis Favoritos</h2>
+      <h2 className="my-4 mx-2">Mis Favoritos</h2>
       <PaginatedProductList products={favoriteProducts} />
     </div>
     </>

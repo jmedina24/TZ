@@ -49,6 +49,7 @@ export const products = [
     category: 'Laptops',
     subcategory: 'Gaming',
     price: 700,
+    discountPercent: 20, // 20% de descuento
     sold: 15,
     stock: 9,
     image: 'https://www.notebookcheck.net/fileadmin/Notebooks/Dell/Inspiron_15_5000_5567-1753/case5_1.jpg',
@@ -61,6 +62,7 @@ export const products = [
     subcategory: 'Routers',
     price: 60,
     stock: 56,
+    discountPercent: 20, // 20% de descuento
     sold: 900,
     image: 'https://tse3.mm.bing.net/th/id/OIP.LHtVB3RHM0p3BK8AS3zaogHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3',
     description: 'Router de doble banda con buena cobertura.',
@@ -71,6 +73,7 @@ export const products = [
     category: 'Impresión',
     subcategory: 'Impresoras',
     price: 90,
+    discountPercent: 20, // 20% de descuento
     sold: 1500,
     stock: 20,
     image: 'https://crdms.images.consumerreports.org/f_auto,w_600/prod/products/cr/models/401598-all-in-one-inkjet-printers-hp-deskjet-2755-10015184.png',
@@ -83,6 +86,7 @@ export const products = [
     subcategory: 'Productividad (Office)',
     price: 99,
     sold: 25,
+    discountPercent: 20, // 20% de descuento
     stock: 500,
     image: 'https://www.net-essence.com/wp-content/uploads/Office-365.png',
     description: 'Licencia anual de Office 365 para todos tus dispositivos.',
@@ -93,6 +97,7 @@ export const products = [
     category: 'Consolas y Gaming',
     subcategory: 'PlayStation',
     price: 500,
+    discountPercent: 20, // 20% de descuento
     sold: 69,
     stock: 96,
     image: 'https://vop.uy/wp-content/uploads/2021/06/productos35_68548-1024x1024.jpg',
@@ -115,8 +120,8 @@ export const products = [
     name: 'Monitor Samsung 24"',
     price: 200,
     discountPercent: 20, // 20% de descuento
-    category: 'Laptops',
-    subcategory: 'Gaming',
+    category: 'Monitores',
+    subcategory: 'Gamer (144Hz+)',
     stock: 80,
     sold: 10,
     image: 'https://th.bing.com/th/id/R.6c65d8b7f64e7df3d52acf334a680da6?rik=ZQmKuwIn%2bM862A&pid=ImgRaw&r=0',
@@ -125,7 +130,7 @@ export const products = [
     id: 12,
     name: 'Teclado Mecánico Redragon',
     price: 50,
-    // sin descuento
+    discountPercent: 20, // 20% de descuento
     category: 'perifericos',
     sold:50,
     stock: 0,

@@ -21,6 +21,7 @@ const ProfileAdmin = () => {
   const [tab, setTab] = useState("personal");
   const { currentUser, updateUserProfile } = useUser();
   const [userData, setUserData] = useState({
+    email: "",
     document: "",
     firstName: "",
     middleName: "",
@@ -35,6 +36,7 @@ const ProfileAdmin = () => {
   useEffect(() => {
     if (currentUser) {
       setUserData({
+        email: currentUser.email || "",
         document: currentUser.document || "",
         firstName: currentUser.firstName || "",
         middleName: currentUser.middleName || "",
@@ -103,6 +105,19 @@ const ProfileAdmin = () => {
               )}
               <input type="file" id="profile-pic" onChange={handleFileChange} />
               <label htmlFor="profile-pic">Foto de Perfil</label>
+            </div>
+
+            <div className="form-group">
+              <input
+                className="email-display"
+                type="email"
+                id="email"
+                name="email"
+                value={userData.email}
+                readOnly
+                placeholder=" "
+              />
+              <label htmlFor="doc-id">Correo electrónico</label>
             </div>
 
             <div className="form-group">

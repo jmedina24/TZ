@@ -26,7 +26,7 @@ const CategoryOverlay = ({ isOpen, onClose, onSelectedCategory }) => {
     <div className="overlay">
       <div className="overlay-content">
         <button className="close-btn" onClick={onClose}>✕</button>
-        <h2>Categorías</h2>
+        <h2 className='category__title'>Categorías</h2>
         <ul className="category-list">
           {categories.map((cat, index) => {
             const isOpenCat = openIndex === index;
